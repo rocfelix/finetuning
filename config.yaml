@@ -1,0 +1,105 @@
+# Model Configuration
+model:
+  name: "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+  cache_dir: "./model_cache"
+  use_auth_token: null
+
+# LoRA Configuration
+lora:
+  r: 8
+  lora_alpha: 16
+  lora_dropout: 0.05
+  bias: "none"
+  task_type: "CAUSAL_LM"
+  target_modules:
+    - "q_proj"
+    - "k_proj"
+    - "v_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+
+# Quantization
+quantization:
+  load_in_4bit: false
+  bnb_4bit_compute_dtype: "float16"
+  bnb_4bit_quant_type: "nf4"
+  bnb_4bit_use_double_quant: true
+
+# Training Configuration
+training:
+  output_dir: "./outputs"
+  num_train_epochs: 1
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 1
+  gradient_accumulation_steps: 16
+  learning_rate: 2.0e-4
+  lr_scheduler_type: "cosine"
+  warmup_ratio: 0.03
+  weight_decay: 0.001
+  max_grad_norm: 0.3
+  logging_steps: 10
+  save_steps: 100
+  eval_steps: 100
+  save_total_limit: 3
+  fp16: false
+  bf16: true
+  optim: "adamw_torch"
+  gradient_checkpointing: true
+  max_seq_length: 256
+
+# Dataset Configuration
+dataset:
+  name: "glaiveai/glaive-function-calling-v2"
+  split: "train"
+  test_size: 0.1
+  seed: 42
+  max_samples: 20
+
+# Logging
+logging:
+  use_wandb: false
+  wandb_project: "llm-sft"
+  wandb_run_name: null
+  report_to: "tensorboard"
+
+# Inference Configuration
+inference:
+  max_new_tokens: 256
+  temperature: 0.7
+  top_p: 0.9
+  top_k: 50
+  do_sample: true
+
+# GRPO Configuration (Reinforcement Learning)
+grpo:
+  beta: 0.04  # KL penalty coefficient
+  learning_rate: 5.0e-6
+  max_completion_length: 512
+  num_generations: 4  # Number of outputs to generate per prompt for group comparison
+  max_prompt_length: 256
+  reward_function: "tool_use"  # Options: "accuracy", "length", "format", "tool_use"
+  use_vllm: false  # vLLM is faster for generation but might be tricky on Mac MPS
+
+# Prompt Templates
+templates:
+  active_style: "alpaca"
+  alpaca:
+    with_input: |
+      Below is an instruction that describes a task, paired with an input that provides further context. Write a response that appropriately completes the request.
+
+      ### Instruction:
+      {instruction}
+
+      ### Input:
+      {input}
+
+      ### Response:
+    no_input: |
+      Below is an instruction that describes a task. Write a response that appropriately completes the request.
+
+      ### Instruction:
+      {instruction}
+
+      ### Response:

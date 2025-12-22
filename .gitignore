@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv/
+
+# uv
+.python-version
+uv.lock
+
+# Model files and outputs
+outputs/
+model_cache/
+*.bin
+*.safetensors
+*.ckpt
+*.pth
+wandb/
+*.log
+
+# Data files
+*.jsonl
+*.json
+sample_prompts.txt
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Config with secrets (if you add tokens)
+config.local.yaml
+
+# TensorBoard
+logs/
+runs/
+
