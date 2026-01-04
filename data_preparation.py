@@ -28,8 +28,12 @@ class DataPreparation:
         """Load dataset from Hugging Face Hub."""
         print(f"Loading dataset: {self.dataset_config['name']}")
         
+        load_args = [self.dataset_config['name']]
+        if self.dataset_config.get('config_name'):
+            load_args.append(self.dataset_config['config_name'])
+            
         dataset = load_dataset(
-            self.dataset_config['name'],
+            *load_args,
             split=self.dataset_config['split']
         )
         

@@ -46,16 +46,17 @@ training:
   fp16: false
   bf16: true
   optim: "adamw_torch"
-  gradient_checkpointing: true
+  gradient_checkpointing: false
   max_seq_length: 256
 
 # Dataset Configuration
 dataset:
-  name: "glaiveai/glaive-function-calling-v2"
+  name: "openai/gsm8k"
+  config_name: "main" # specific config for gsm8k
   split: "train"
   test_size: 0.1
   seed: 42
-  max_samples: 20
+  max_samples: 1000
 
 # Logging
 logging:
@@ -79,7 +80,7 @@ grpo:
   max_completion_length: 512
   num_generations: 4  # Number of outputs to generate per prompt for group comparison
   max_prompt_length: 256
-  reward_function: "tool_use"  # Options: "accuracy", "length", "format", "tool_use"
+  reward_function: "math_reasoning"  # New function for GSM8K
   use_vllm: false  # vLLM is faster for generation but might be tricky on Mac MPS
 
 # Prompt Templates
